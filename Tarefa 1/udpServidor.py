@@ -7,7 +7,7 @@ def Main():
     socketUDP = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     # Configura o IP e a porta que o servidor vai ficar executando
     socketUDP.bind((host,port))
-    a = ' - Abc Bolinhas'
+    a = '- Abc Bolinhas'
     print(a)
     
     print('Servidor UDP: {}:{}'.format(host,port))
@@ -15,13 +15,13 @@ def Main():
         print('Esperando mensagens...')
         data, address = socketUDP.recvfrom(4096) # buffer size - bytes
         print('Recebido {} bytes de {}'.format(len(data), address))
-        novo = (str(data, 'utf-8') + a)
+        novo = (str(data, 'utf-8').upper() + a)
         print(novo)
         
         
         
         if data:
-            sent = socketUDP.sendto(novo.upper().encode('utf-8'), address)
+            sent = socketUDP.sendto(novo.encode('utf-8'), address)
         else:
             break
 
