@@ -1,6 +1,6 @@
 import socket #Biel Steve
 import re
-import math
+
 
 def Main():
     host = "127.0.0.1"
@@ -21,27 +21,43 @@ def Main():
         data, address = socketUDP.recvfrom(4096) # buffer size - bytes
         print('Recebido {} bytes de {}'.format(len(data), address))
         
-        novo = str(data, 'utf-8')
+        #Transformando data em str e criando variavel novo
+        novo = data.decode()
         print(novo)
         
-        operador = re.search('\+|-|\%|\*|\/|\n', novo)
+        # metodo find procura na string
+        soma = novo.find('+')
+        menos = novo.find('-')
+        div = novo.find('/')
+        vezes = novo.find('*')
+        mod = novo.find('%')
+        
+        
+        #separar operadores dos numeros
         valor = re.split('\+|-|\%|\*|\/|\n', novo)
         
-        if (valor[0].isdigit() and valor[1].isdigit()):
-            if(operador[0] == '-'):
-                resul = float(valor[0]) - float(valor[1])
-            elif(operador[0] == '+'):
-                resul = float(valor[0]) + float(valor[1])
-            elif(operador[0] == '*'):
-                resul = float(valor[0]) * float(valor[1])
-            elif(operador[0] == '/'):
-                resul = float(valor[0]) / float(valor[1])
-            elif(operador[0] == '%'):
-                resul = math.fmod(float(valor[0]), float(valor[1]))  
-            else:
-                print('Tem alguma coisa errada ai parça')
-            if (resul):                    
-                sent = socketUDP.sendto(str(resul).encode('utf-8'), address)       
+        print(valor[0])
+        print(valor[1])
+        
+        #verificando qual operador é, fazendo o calculo e ja enviando para o Client
+        if soma > 0:
+            resul = int(valor[0]) + int(valor[1])
+            sent = socketUDP.sendto(str(resul).encode(), address)
+        elif menos > 0:
+            resul = int(valor[0]) - int(valor[1])
+            sent = socketUDP.sendto(str(resul).encode(), address)
+        elif div > 0:
+            resul = int(valor[0]) / int(valor[1])
+            sent = socketUDP.sendto(str(resul).encode(), address)
+        elif vezes > 0:
+            resul = int(valor[0]) * int(valor[1])
+            sent = socketUDP.sendto(str(resul).encode(), address)
+        elif mod > 0:
+            resul = int(valor[0]) % int(valor[1])
+            sent = socketUDP.sendto(str(resul).encode(), address) 
+        else:
+            print('Tem alguma coisa errada ai parça')
+      
 
 
     socketUDP.close()

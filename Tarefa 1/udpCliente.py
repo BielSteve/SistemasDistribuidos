@@ -20,6 +20,10 @@ def Main():
 
         #aguarda nova mensagem do usuário
         message = input(" -> (q sair) ")
+       
+        if (message == 'q'):
+            sent = mySocket.sendto(message.encode(), destino)
+            break
         
     mySocket.close()
     

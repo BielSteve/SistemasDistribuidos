@@ -9,6 +9,8 @@ def Main():
     
     #aguarda o usuário digitar uma mensagem
     message = input(" -> (q para sair) ")
+    
+    
     while True:
         
         # envia a mensagem do usuário para o servidor
