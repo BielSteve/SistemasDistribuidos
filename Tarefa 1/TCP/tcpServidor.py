@@ -7,13 +7,14 @@ def rodaThread(conn):
         print('Esperando mensagens...')
         data = conn.recv(1024)
         if not data:
+            print('Fechando a conexão')
+            conn.close()
             break
         
+        #Se tiver dados
         print('Recebido {} bytes de {}'.format(len(data), conn.getpeername()))
-
-
         # devolve a mensagem para o cliente
-        conn.send(data.upper())
+        conn.sendall(data.upper())
 
 
     conn.close()
@@ -24,8 +25,12 @@ def Main():
 
     host = "0.0.0.0"
     port = 10000
+    
+    # cria o socket TCP do servidor (Internet,Transporte)
     socketTCP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # Configura o IP e a porta que o servidor vai ficar executando
     socketTCP.bind((host,port))
+    #Escuta
     socketTCP.listen(1)
     print('Servidor TCP: {}:{}'.format(host,port))
     
