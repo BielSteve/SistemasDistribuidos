@@ -1,6 +1,7 @@
 import socket
 import threading
 
+#cria um vetor
 lista = []
 
 def rodaThread(conn):
@@ -10,10 +11,13 @@ def rodaThread(conn):
         print('Esperando mensagens...')
         data = conn.recv(1024)
 
+        #transformando o data em string e colocando na nova variavel nova
         nova = data.decode()
-        
+        #percorrendo o vetor lista
         for x in lista:
+            #se a conexão for diferente de conexão na posição x
             if conn != x:
+                #enviar mensagem para o outro usuario
                 x.send(nova.encode())
         
         if not data:
@@ -23,8 +27,8 @@ def rodaThread(conn):
         
         #Se tiver dados
         print('Recebido {} bytes de {}'.format(len(data), conn.getpeername()))
-        # devolve a mensagem para o cliente
-        conn.sendall(data)
+        # # devolve a mensagem para o cliente
+        # conn.sendall(data)
 
 
     conn.close()
@@ -49,6 +53,7 @@ def Main():
         # fica bloqueado aguardando a conexão de um cliente
         conn, addr = socketTCP.accept()
         
+        #adiciona item ao final da lista
         lista.append(conn)
         
         print ("Conexão realizada por: " + str(addr))
