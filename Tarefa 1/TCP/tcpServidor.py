@@ -1,11 +1,21 @@
 import socket
 import threading
 
+lista = []
+
 def rodaThread(conn):
     while True:
+        
 
         print('Esperando mensagens...')
         data = conn.recv(1024)
+
+        nova = data.decode()
+        
+        for x in lista:
+            if conn != x:
+                x.send(nova.encode())
+        
         if not data:
             print('Fechando a conexão')
             conn.close()
@@ -14,7 +24,7 @@ def rodaThread(conn):
         #Se tiver dados
         print('Recebido {} bytes de {}'.format(len(data), conn.getpeername()))
         # devolve a mensagem para o cliente
-        conn.sendall(data.upper())
+        conn.sendall(data)
 
 
     conn.close()
@@ -35,9 +45,12 @@ def Main():
     print('Servidor TCP: {}:{}'.format(host,port))
     
     while True:
-        
+
         # fica bloqueado aguardando a conexão de um cliente
         conn, addr = socketTCP.accept()
+        
+        lista.append(conn)
+        
         print ("Conexão realizada por: " + str(addr))
         # cria e dispara a execução da thred do cliente
         t = threading.Thread(target=rodaThread, args=(conn,))
