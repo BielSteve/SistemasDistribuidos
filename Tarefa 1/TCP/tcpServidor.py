@@ -7,33 +7,48 @@ lista = []
 def rodaThread(conn):
     while True:
         
-
         print('Esperando mensagens...')
         data = conn.recv(1024)
-
-        #transformando o data em string e colocando na nova variavel nova
-        nova = data.decode()
-        #percorrendo o vetor lista
-        for x in lista:
-            #se a conexão for diferente de conexão na posição x
-            if conn != x:
-                #enviar mensagem para o outro usuario
-                x.send(nova.encode())
         
-        if not data:
-            print('Fechando a conexão')
-            conn.close()
+        if (data.decode() == 'q'):
             break
         
-        #Se tiver dados
-        print('Recebido {} bytes de {}'.format(len(data), conn.getpeername()))
-        # # devolve a mensagem para o cliente
-        # conn.sendall(data)
+        if (data):
+
+            #transformando o data em string e colocando na nova variavel nova
+            nova = data.decode()
+            
+            #aque eu uso a função find para procurar o opetador +
+            if nova.find('+') > 0:
+                #aqui eu faço a separação
+                valor = nova.split('+')
+                mensagem_f = valor[0] + ' >>> ' + valor[1]
+            
+                #percorrendo o vetor lista
+                for x in lista:
+                    
+                    #se a conexão for diferente de conexão na posição x
+                    if conn != x:
+                        try:
+                            #enviar mensagem para o outro usuario
+                            x.send(mensagem_f.encode())
+                        except:
+                            print('tomara que de certo')
+        #remover conexões   
+        else:
+            removerConexao(conn)
+            break
+
 
 
     conn.close()
     return
 
+def removerConexao(conn):
+    if conn in lista:
+        conn.close()
+        lista.remove(conn)
+        
 
 def Main():
 
