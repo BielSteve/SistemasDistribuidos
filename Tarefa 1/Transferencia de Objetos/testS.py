@@ -1,7 +1,16 @@
 import socket
 
+from tkinter import filedialog
+from tkinter import Tk
+
+#abre uma tela para escolha do arquivo
+root = Tk()
+root.withdraw()
+file_path = filedialog.askopenfilename(initialdir = "/",title = "Escolha um arquivo",filetypes = (("jpeg files","*.jpg"),("all files","*.*")))
+print(file_path)
+
 #arquivo para enviar
-file_path = "ServidorArquivo.py"
+file_path = "testS.py"
 
 #cria o socket
 server_socket = socket.socket()
