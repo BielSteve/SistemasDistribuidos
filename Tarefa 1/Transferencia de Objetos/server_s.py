@@ -19,41 +19,50 @@ def rodaThread(conn):
         #recebe mensagem do usuário
         data = conn.recv(4096)
         
-        #desserializa a mensagem recebida, disponibilizando o objeto novamente na memoria
-        objetoRecebido = json.loads(data)
-        print( objetoRecebido )
-        #mostra os dados do objeto
-        print( objetoRecebido.get("usuario") )
-        print( objetoRecebido.get("msg") )
         
-        # if (data.decode() == 'q'):
-        #     break
-        
-        # if (data):
+        if object:
+            #desserializa a mensagem recebida, disponibilizando o objeto novamente na memoria
+            objetoRecebido = json.loads(data)
+            print( objetoRecebido )
+            #mostra os dados do objeto
+            print( objetoRecebido.get("usuario") )
+            print( objetoRecebido.get("msg") )
+            
+            
+            
+            
+        else:
+            
+            if (data.decode() == 'q'):
+                break
+            
+            if (data):
 
-        #     #transformando o data em string e colocando na nova variavel nova
-        #     nova = data.decode()
+                #transformando o data em string e colocando na nova variavel nova
+                nova = data.decode()
+                
+                #aqui eu uso a função find para procurar o opetador +
+                if nova.find('+') > 0:
+                    #aqui eu faço a separação
+                    valor = nova.split('+')
+                    mensagem_f = valor[0] + ' >>> ' + valor[1]
+                
+                    #percorrendo o vetor lista
+                    for x in lista:
+                        
+                        #se a conexão for diferente de conexão na posição x
+                        if conn != x:
+                            try:
+                                #enviar mensagem para o outro usuario
+                                x.send(mensagem_f.encode())
+                            except:
+                                print('tomara que de certo')
+            #remover conexões   
+            else:
+                removerConexao(conn)
+                break
             
-        #     #aque eu uso a função find para procurar o opetador +
-        #     if nova.find('+') > 0:
-        #         #aqui eu faço a separação
-        #         valor = nova.split('+')
-        #         mensagem_f = valor[0] + ' >>> ' + valor[1]
-            
-        #         #percorrendo o vetor lista
-        #         for x in lista:
-                    
-        #             #se a conexão for diferente de conexão na posição x
-        #             if conn != x:
-        #                 try:
-        #                     #enviar mensagem para o outro usuario
-        #                     x.send(mensagem_f.encode())
-        #                 except:
-        #                     print('tomara que de certo')
-        # #remover conexões   
-        # else:
-        #     removerConexao(conn)
-        #     break
+        
 
 
 
