@@ -1,5 +1,7 @@
 import socket, threading, pickle, time, uuid
 from metodos import enviar_serealizado, pega_msg_serealizada
+from tkinter import filedialog
+from tkinter import Tk
 
 class Message(object):
     def __init__(self):
@@ -36,19 +38,28 @@ def receber():
             socketClient.close()
             break
 
+
+
 def enviar():
     while True:
-        x = input("")
-
         print('Digite q para sair')
         print('Digite f enviar arquivo')
-
+        print('Ou apenas digite a sua mensagem')
+        
+        x = input("")
+        
         if x == 'q':
             enviar_serealizado(socketClient, x)
             break
 
         elif x == 'f':
-            file_path = input('Informe qual o tipo de arquivo. Ex: nome.jpg*(preferencia esteja no mesmo diretorio) [*Disponiveis: png, gif, jpg e txt] ')
+            root = Tk()
+            root.deiconify()
+            
+            
+            #file_path = input('Informe qual o tipo de arquivo. Ex: nome.jpg*(preferencia esteja no mesmo diretorio) [*Disponiveis: png, gif, jpg e txt] ')
+            file_path = filedialog.askopenfilename(initialdir = "/",title = "Escolha um arquivo",filetypes = (("jpeg files","*.jpg"),("png files","*.png*"),("gif files","*.gif"),("txt files","*.txt")))
+            
             #aqui chamamos o metodo pega_extencao, pq é necessario para podermos enviar o arquivo
             extension = pega_extencao(file_path)
 
@@ -76,6 +87,7 @@ def enviar():
 
 threading.Thread(target=receber).start()
 threading.Thread(target=enviar).start()
+
 
 
 # recebe o arquivo

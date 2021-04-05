@@ -12,16 +12,12 @@ class Message(object):
 # lida com as mensagens recebidas do cliente ligado à essa thread
 def rodaThread(conn):
     
-    enviar_serealizado(conn, 'Escreva sua mensagem ou Digite f para enviar arquivo ou Digite q para sair')
-    
     while True:
 
         data = conn.recv(1024)
         
-        if (data.message == 'q'):
-            break
-        
         if data:
+            
             try:
                 # aqui eu puxo o metodo que envia as mensagens como antes
                 data = pega_msg_serealizada(conn, data)
@@ -35,13 +31,10 @@ def rodaThread(conn):
                 for x in lista:
                     #verifico se conexão é diferente da conexão atual
                     if conn != x:
-                        
                         #aqui eu chamo o metodo para enviar serealizado
-                        enviar_serealizado(x, data.message)
-                        
+                        enviar_serealizado(x, data.message)   
                 #se caso não for uma mensagem normal, ele cai nesse except para enviar o arquivo
             except:
-                
                 try:
                     #aqui eu puxo outro metodo para enviar arquivo para todos os clientes
                     reenviar_arquivo(conn, data)
@@ -52,8 +45,6 @@ def rodaThread(conn):
             removerConexao(conn)
             break
 
-
-
 # escutando para receber novas conexões
 def Main():
     
@@ -61,7 +52,6 @@ def Main():
     mySocket.bind(('127.0.0.1', 10000))
     mySocket.listen()
     print('Servidor on')
-    
     
     while True:
         conn, addr = mySocket.accept()
@@ -74,8 +64,7 @@ def Main():
         #aqui eu pego eu acrescento no final da lista. Nome na lista nomes e conexões na lista lista
         nomes.append(nome)
         lista.append(conn)
-
-        
+    
         threading.Thread(target=rodaThread, args=(conn,)).start()
 
 Main()
