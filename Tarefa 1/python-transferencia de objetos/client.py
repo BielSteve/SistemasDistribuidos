@@ -1,7 +1,9 @@
 import socket, threading, pickle, time, uuid
-from metodos import enviar_serealizado, pega_msg_serealizada
 from tkinter import filedialog
 from tkinter import Tk
+from metodos import enviar_serealizado, pega_msg_serealizada
+
+
 
 class Message(object):
     def __init__(self):
@@ -53,9 +55,9 @@ def enviar():
             break
 
         elif x == 'f':
+            
             root = Tk()
             root.deiconify()
-            
             
             #file_path = input('Informe qual o tipo de arquivo. Ex: nome.jpg*(preferencia esteja no mesmo diretorio) [*Disponiveis: png, gif, jpg e txt] ')
             file_path = filedialog.askopenfilename(initialdir = "/",title = "Escolha um arquivo",filetypes = (("jpeg files","*.jpg"),("png files","*.png*"),("gif files","*.gif"),("txt files","*.txt")))
